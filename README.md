@@ -1,4 +1,4 @@
-# 🚀 HYDRO-1 Flight Computer v2.0
+# 🚀 HYDRO-1 Flight Computer v2.0 - Work in progress
 
 **HYDRO-1** is a high-performance avionics system designed for experimental water-powered rockets. It features real-time telemetry, a multi-stage flight state machine, and triple-redundant parachute deployment logic.
 
