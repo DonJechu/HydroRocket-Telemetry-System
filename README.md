@@ -121,51 +121,59 @@ The avionics bay has gone through three major design iterations. Each failure wa
 ---
 
 ### v1 — Structural Baseline
-
+ 
 **Goal:** Minimum viable bay. One-piece design, direct PCB mount.
-
+ 
 **Result — Failed integration:**
 - PCB mounting nuts and standoff contractions caused mechanical interference; the board could not be seated flush
 - No dedicated battery compartment — LiPo placement undefined
 - Ring dimensions incorrect: OD too small to fit inside a 1.35L Coca-Cola PET bottle (~85mm ID required)
 - Single-piece design meant any revision required reprinting the entire part
-
 **Mass:** 33.01 g | **Height:** 118.5 mm | **OD:** 52 mm
-
+ 
+![AvionicsBay v1 Render](media/Prototype%20Gallery/AvionicsBay_v1_render.png)
+ 
 ---
-
+ 
 ### v2 — Rail System
-
+ 
 **Goal:** Solve PCB access problem. Introduce modularity.
-
+ 
 **Key change:** Split into two parts — a structural sled that mounts to the bottle, and a PCB carrier plate that slides into a rail. This means PCB changes only require reprinting the carrier plate, not the full bay.
-
+ 
 **Result — Too heavy:**
 - Rail + structural shell geometry increased mass to 66.62 g (+100% vs v1)
 - Battery space still insufficient for 103040 LiPo cell (30×40×10 mm)
 - OD corrected but not validated against physical bottle measurement
-
 **Mass:** 66.62 g | **Height:** 118 mm | **OD:** 81 mm
-
+ 
+![AvionicsBay v2 Render](media/Prototype%20Gallery/AvionicsBay_v2_render.png)
+ 
 ---
-
+ 
 ### v3 — Mass-Optimized Honeycomb (Current Alpha)
-
+ 
 **Goal:** Reduce mass below 40g while keeping v2's rail modularity. Introduce honeycomb infill geometry on the main panel.
-
+ 
 **Key changes:**
 - Reduced height by 16 mm (102 mm total)
 - Honeycomb cutout pattern on main structural panel (mass reduction + ventilation)
 - Maintained two-piece rail system from v2
-
 **Failures documented (v3.0 Alpha):**
 1. **Mechanical:** Nut/standoff interference on PCB mount — same root cause as v1, not fully resolved
 2. **Volumetric:** Battery compartment still does not accommodate LiPo 103040 (30×40×10 mm) + cable routing (minimum 5–8 mm egress space required)
 3. **Geometric:** OD not validated against physical bottle. Nominal 80.9 mm but actual 1.35L bottle ID varies 84–87 mm by batch — must be measured with calipers before fixing in CAD
 4. **Structural:** Print fracture during support removal on thin-wall sections (<2 mm) with Tree support configuration on Bambu Lab P2S
-
 **Mass:** 46.22 g | **Height:** 102 mm | **OD:** 80.9 mm
-
+ 
+![AvionicsBay v3 Render](media/Prototype%20Gallery/AvionicsBay_v3_render.png)
+ 
+### PCB — Physical Assembly
+ 
+| Bare board (v1 iteration) | Full assembly with ESP32 + sensors |
+|---|---|
+| ![PCB bare](media/Prototype%20Gallery/PCB_v1_bare_assembly.jpg) | ![PCB full](media/Prototype%20Gallery/PCB_v2_full_assembly.jpg) |
+ 
 ---
 
 ## Firmware — Flight State Machine
