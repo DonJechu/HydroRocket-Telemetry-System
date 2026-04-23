@@ -327,6 +327,44 @@ The ESP32 creates a Wi-Fi Access Point (`SSID: GANNET`) and serves a WebSocket s
 
 ---
 
+## Ground Station — HYDRO-1 GS
+ 
+The ground station is a separate React + Vite web application that connects to the flight computer over WebSocket and visualizes all telemetry in real time.
+ 
+![Ground Station Dashboard](media/Prototype%20Gallery/ground_station_v2.png)
+ 
+### Features
+ 
+| Feature | Description |
+|---|---|
+| **3D Attitude View** | Real-time 3D rocket model that rotates with live pitch, roll, and yaw data |
+| **Flight Phase Tracker** | Left panel shows all 7 states (STANDBY → ARMED → IGNITION → ASCENT → APOGEE → DESCENT → RECOVERY), highlighting the active state |
+| **Live Telemetry Panel** | Right panel — altitude (m), velocity (m/s), G-force, pitch, roll, yaw, temperature (°C), pressure (hPa) |
+| **Session Records** | Tracks max altitude, max velocity, max G, and mission elapsed time (T+) |
+| **Altitude & Velocity Charts** | Real-time graphs at the bottom of the screen |
+| **WiFi Connect / Demo Mode** | Connect to the ESP32 AP or run a simulated flight for testing without hardware |
+| **Status Bar** | Persistent bottom bar showing pitch, roll, temperature, and pressure at a glance |
+ 
+### Tech Stack
+ 
+```
+React + Vite        — UI framework (localhost:5173 in dev)
+WebSocket (port 81) — Real-time data stream from ESP32
+Three.js            — 3D rocket attitude visualization
+```
+ 
+### Connection Flow
+ 
+```
+ESP32 (AP: GANNET) ──► WebSocket ws://192.168.4.1:81 ──► Ground Station
+                              10 Hz JSON packets
+```
+
+ ![Ground Station Demo](media/Prototype%20Gallery/ground_station_demo.gif)
+> **Note:** Ground station source code is maintained in a separate repository. Link coming soon.
+ 
+---
+
 ## Repository Structure
 
 ```
