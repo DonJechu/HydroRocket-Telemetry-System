@@ -72,9 +72,10 @@ In-flight telemetry data will be compared between configurations to measure real
 | Component | Part | Role |
 |---|---|---|
 | **Microcontroller** | ESP32-DEVKIT-V1 (30-pin) | Main processor, Wi-Fi AP, WebSocket server |
-| **IMU** | MPU-6050 | 9-axis accelerometer/gyroscope — configured for ±16G |
+| **IMU** | MPU-6050 compatible module | 9-axis IMU — note: physical chip is newer variant, library-compatible — configured for ±16G |
 | **Barometer** | BMP280 | Altitude via pressure — hardware IIR filter enabled |
 | **Power Regulation** | MT3608 Boost Converter | 3.7V LiPo → 5V regulated for ESP32 VIN |
+| **Decoupling** | 100µF electrolytic + 100nF ceramic | MT3608 output bulk filter + IMU VCC bypass |
 | **Battery** | LiPo 103040 — 3.7V / 1200mAh / 4.44Wh | Flight power supply |
 | **Actuator** | Standard servo (GPIO 13) | Parachute deployment mechanism |
 
@@ -96,7 +97,7 @@ LiPo 3.7V ──► MT3608 Boost ──► 5V ──► ESP32 VIN ──► 3.3V
                 (adj. to 5V)
 ```
 
-> **Schematic:** See [`hardware/Schematic_HidroRocket_v0_2026-04-20.pdf`](hardware/Schematic_HidroRocket_v0_2026-04-20.pdf)
+> **Schematic:** See [`hardware/Schematic_HidroRocket_v0_2026-04-26.pdf`](hardware/Schematic_HidroRocket_v0_2026-04-26.pdf)
 
 ---
 
