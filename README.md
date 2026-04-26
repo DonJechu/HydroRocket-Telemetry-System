@@ -115,7 +115,7 @@ The avionics bay has gone through three major design iterations. Each failure wa
 | **Pieces** | 1 | 2 | 2 | 1 |
 | **PCB mount** | Screwed direct | Slide rail | Slide rail (revised) | TBD |
 | **Battery space** | None | Insufficient | In revision | TBD |
-| **Fits 1.35L bottle** | ❌ | ❌ | ❌ | ⚠️ Printing |
+| **Fits 1.35L bottle** | ❌ | ❌ | ❌ | ✅ |
 | **Architecture** | 1 piece | 2 pieces | 2 pieces | 1 piece |
 | **Structure** | Solid shell | Rail + shell | Honeycomb panel | Truss / celosía |
 
