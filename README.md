@@ -111,7 +111,7 @@ The avionics bay has gone through three major design iterations. Each failure wa
 |---|---|---|---|---|
 | **Height** | 118.5 mm | 118 mm | 102 mm | TBD |
 | **Base OD** | 52 mm | 81 mm | 80.9 mm | TBD |
-| **Printed Mass** | 33.01 g | 66.62 g | 46.22 g | ~23.92 g* |
+| **Printed Mass** | 33.01 g | 66.62 g | 46.22 g | 25.63 |
 | **Pieces** | 1 | 2 | 2 | 1 |
 | **PCB mount** | Screwed direct | Slide rail | Slide rail (revised) | TBD |
 | **Battery space** | None | Insufficient | In revision | TBD |
@@ -180,9 +180,13 @@ The avionics bay has gone through three major design iterations. Each failure wa
 - Truss skeleton replaces solid honeycomb panel — material only where structurally necessary
 - Estimated model mass: 23.92 g (slicer, no supports) — best result across all versions
 
-**Status:** Printing — `ABv4.2.1.stl` · Layer 91/555 · Bambu Lab P2S · Est. finish 03:51
+**Print history:**
+- `ABv4.0` — Failed. Top Z distance 0mm caused supports to fuse to structure. Removed with damage.
+- `ABv4.1` — Successful. Top Z distance corrected to 0.25mm, Normal supports, threshold 30°. Structure intact post-support removal.
 
 **Design rationale:** Previous versions (v2, v3) introduced modularity to solve PCB access — but added mass and complexity. v4 returns to v1's simplicity with v3's mass consciousness. Less is more.
+
+**Integration status:** PCB assembly fits inside 1.35L bottle. ✅ Pending: secure mounting method and mass measurement.
 
 ![AvionicsBay v4 Render](media/Prototype%20Gallery/AvionicsBay_v4_render.png)
 
@@ -447,7 +451,7 @@ WiFi                (ESP32 built-in)
 | OD validation against physical bottle | ⚠️ Pending — measure with calipers post-print |
 | PCB mounting clearance | ⚠️ TBD — single piece, verify nut interference |
 | LiPo 103040 mounting | ⚠️ No dedicated compartment — open truss design requires external mounting solution |
-| Support removal on truss geometry | ⚠️ Risk — 52.03g total with supports vs 23.92g model |
+| Support removal on truss geometry | ✅ Resolved — Top Z 0.25mm, Normal supports, threshold 30° |
 
 ### Firmware — Planned
 
