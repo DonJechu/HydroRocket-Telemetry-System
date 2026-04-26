@@ -445,7 +445,7 @@ WiFi                (ESP32 built-in)
 |---|---|
 | OD validation against physical bottle | ⚠️ Pending — measure with calipers post-print |
 | PCB mounting clearance | ⚠️ TBD — single piece, verify nut interference |
-| LiPo 103040 compartment fit | ⚠️ TBD — 40×30×10mm + 8mm cable egress |
+| LiPo 103040 mounting | ⚠️ No dedicated compartment — open truss design requires external mounting solution |
 | Support removal on truss geometry | ⚠️ Risk — 52.03g total with supports vs 23.92g model |
 
 ### Firmware — Planned
