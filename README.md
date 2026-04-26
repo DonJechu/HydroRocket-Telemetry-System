@@ -21,7 +21,7 @@
 7. [Telemetry System](#telemetry-system)
 8. [Repository Structure](#repository-structure)
 9. [Build & Flash](#build--flash)
-10. [Known Issues & v3.1 Roadmap](#known-issues--v31-roadmap)
+10. [Known Issues & v4 Integration Status](#known-issues--v4-integration-status)
 
 ---
 
@@ -114,7 +114,7 @@ The avionics bay has gone through three major design iterations. Each failure wa
 | **Pieces** | 1 | 2 | 2 | 1 |
 | **PCB mount** | Screwed direct | Slide rail | Slide rail (revised) | TBD |
 | **Battery space** | None | Insufficient | In revision | TBD |
-| **Fits 1.35L bottle** | ❌ | ❌ | ✅ | ✅ |
+| **Fits 1.35L bottle** | ❌ | ❌ | ❌ | ⚠️ Printing |
 | **Architecture** | 1 piece | 2 pieces | 2 pieces | 1 piece |
 | **Structure** | Solid shell | Rail + shell | Honeycomb panel | Truss / celosía |
 
@@ -437,7 +437,7 @@ WiFi                (ESP32 built-in)
 
 ---
 
-## Known Issues & v3.1 Roadmap
+## Known Issues & v4 Integration Status
 
 ### Mechanical — v4 Targets
 
