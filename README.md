@@ -106,17 +106,19 @@ The avionics bay has gone through three major design iterations. Each failure wa
 
 ### Version Comparison
 
-| Parameter | v1 | v2 | v3 (current) |
-|---|---|---|---|
-| **Height** | 118.5 mm | 118 mm | 102 mm |
-| **Base OD** | 52 mm | 81 mm | 80.9 mm |
-| **Printed Mass** | 33.01 g | 66.62 g | 46.22 g |
-| **Pieces** | 1 | 2 | 2 |
-| **PCB mount** | Screwed direct | Slide rail | Slide rail (revised) |
-| **Battery space** | None | Insufficient | In revision |
-| **Fits 1.35L bottle** | ❌ | ❌ | ⚠️ Pending v3.1 |
+| Parameter | v1 | v2 | v3 | v4 (current) |
+|---|---|---|---|---|
+| **Height** | 118.5 mm | 118 mm | 102 mm | TBD |
+| **Base OD** | 52 mm | 81 mm | 80.9 mm | TBD |
+| **Printed Mass** | 33.01 g | 66.62 g | 46.22 g | ~23.92 g* |
+| **Pieces** | 1 | 2 | 2 | 1 |
+| **PCB mount** | Screwed direct | Slide rail | Slide rail (revised) | TBD |
+| **Battery space** | None | Insufficient | In revision | TBD |
+| **Fits 1.35L bottle** | ❌ | ❌ | ✅ | ✅ |
+| **Architecture** | 1 piece | 2 pieces | 2 pieces | 1 piece |
+| **Structure** | Solid shell | Rail + shell | Honeycomb panel | Truss / celosía |
 
-> *Masses are slicer estimates (PLA, no supports). Final printed mass will differ.*
+> *Masses are slicer estimates (PETG, no supports). Final printed mass will differ.*
 
 ---
 
@@ -167,7 +169,24 @@ The avionics bay has gone through three major design iterations. Each failure wa
 **Mass:** 46.22 g | **Height:** 102 mm | **OD:** 80.9 mm
  
 ![AvionicsBay v3 Render](media/Prototype%20Gallery/AvionicsBay_v3_render.png)
- 
+
+ ### v4 — Single-Piece Truss Architecture (Current)
+
+**Goal:** Eliminate over-engineering. Return to single-piece design with truss/celosía geometry for maximum mass reduction while maintaining structural integrity.
+
+**Key changes:**
+- Single-piece design — removes rail interface, assembly complexity, and inter-part tolerance issues
+- Truss skeleton replaces solid honeycomb panel — material only where structurally necessary
+- Estimated model mass: 23.92 g (slicer, no supports) — best result across all versions
+
+**Status:** Printing — `ABv4.2.1.stl` · Layer 91/555 · Bambu Lab P2S · Est. finish 03:51
+
+**Design rationale:** Previous versions (v2, v3) introduced modularity to solve PCB access — but added mass and complexity. v4 returns to v1's simplicity with v3's mass consciousness. Less is more.
+
+![AvionicsBay v4 Render](media/Prototype%20Gallery/AvionicsBay_v4_render.png)
+
+> ⚠️ Integration results pending print completion.
+
 ### PCB — Physical Assembly
  
 | Bare board (v1 iteration) | Full assembly with ESP32 + sensors |
@@ -420,14 +439,14 @@ WiFi                (ESP32 built-in)
 
 ## Known Issues & v3.1 Roadmap
 
-### Mechanical — v3.1 Targets
+### Mechanical — v4 Targets
 
-| Issue | Root Cause | Fix in v3.1 |
-|---|---|---|
-| PCB nut interference | Standoff geometry not accounted for in CAD | Add 3mm clearance around mounting bosses |
-| Battery doesn't fit | Compartment sized to PCB footprint, not LiPo | Measure LiPo 103040 physically (30×40×10mm), add 8mm cable egress |
-| OD not validated | Used nominal dimension instead of measured | Measure actual bottle with calipers before fixing OD in Fusion 360 |
-| Thin-wall fracture on support removal | Tree supports too aggressive on <2mm walls | Switch to Normal supports, 15% density, 0.2mm Z-distance |
+| Item | Status |
+|---|---|
+| OD validation against physical bottle | ⚠️ Pending — measure with calipers post-print |
+| PCB mounting clearance | ⚠️ TBD — single piece, verify nut interference |
+| LiPo 103040 compartment fit | ⚠️ TBD — 40×30×10mm + 8mm cable egress |
+| Support removal on truss geometry | ⚠️ Risk — 52.03g total with supports vs 23.92g model |
 
 ### Firmware — Planned
 
