@@ -84,6 +84,7 @@ void setup() {
 
   // WiFi AP + WebSockets
   WiFi.softAP(ssid, password);
+  WiFi.setTxPower(WIFI_POWER_8_5dBm);
   webSocket.begin();
   Serial.println("=== HYDRO-1 FLIGHT COMPUTER BOOT ===");
 
@@ -144,7 +145,8 @@ void loop() {
   readSensors();
   updateLogic();
 
-  if (millis() - lastTelemetryTime >= telemetryInterval) {
+  int activeInterval = (currentState == STANDBY) ? 1000 : 100;
+  if (millis() - lastTelemetryTime >= activeInterval) {
     sendData();
     lastTelemetryTime = millis();
   }
@@ -160,9 +162,11 @@ void updateLogic() {
 
     // -- STANDBY: esperar despegue confirmado por N muestras
     case STANDBY:
+      setCpuFrequencyMhz(80);
       if (gForce >= LIFTOFF_G) {
         liftoffCounter++;
         if (liftoffCounter >= LIFTOFF_CONFIRMS) {
+          setCpuFrequencyMhz(240);  // Restaurar CPU a máximo para vuelo
           currentState    = ASCENT;
           ascentStartTime = millis();
           maxAltitude     = currentAltitude;
@@ -263,9 +267,8 @@ void readSensors() {
     }
 
     // Velocidad — diferencial de altitud filtrada
-    if (dt > 0.001f) {
+    if (dt > 0.001f && abs(gForce - 1.0f) > 0.05f) {
       float rawVel = (currentAltitude - lastAltitude) / dt;
-      // Alpha=0.85 en vuelo: suaviza turbulencia sin ocultar dinámica real
       velocity = velocity * 0.85f + rawVel * 0.15f;
     }
 
