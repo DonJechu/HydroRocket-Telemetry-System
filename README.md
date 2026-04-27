@@ -385,8 +385,8 @@ ESP32 (AP: GANNET) ──► WebSocket ws://192.168.4.1:81 ──► Ground Stat
 ```
 
  ![Ground Station Demo](media/Prototype%20Gallery/ground_station_demo.gif)
-> **Note:** Ground station source code is maintained in a separate repository. Link coming soon.
- 
+> **Ground Station Repository:** [HYDRO-1-Ground-Station](https://github.com/DonJechu/HYDRO-1-Ground-Station)
+>  
 ---
 
 ## Repository Structure
