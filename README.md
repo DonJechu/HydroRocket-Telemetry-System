@@ -3,7 +3,7 @@
 > **Avionics system for experimental water-powered rockets.**
 > Real-time telemetry · Triple-redundant apogee detection · Wi-Fi ground station · 7-state flight FSM
 
-[![Status](https://img.shields.io/badge/status-In%20Development-yellow)](https://github.com/DonJechu/HydroRocket-Telemetry-System)
+[![Status](https://img.shields.io/badge/status-Flight%20Testing-orange)](https://github.com/DonJechu/HydroRocket-Telemetry-System)
 [![Platform](https://img.shields.io/badge/platform-ESP32-blue)](https://www.espressif.com/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Research](https://img.shields.io/badge/research-EMI%20%2F%20Poynting%20Vector-purple)](docs/research/)
@@ -35,7 +35,7 @@ The system provides:
 - **Hardware IIR pressure filtering** on BMP280 to suppress aerodynamic transients
 - **Parachute deployment** via servo at confirmed apogee
 
-> ⚠️ **Status:** The rocket has not yet been launched. Currently in integration and ground-testing phase. This repository documents the complete design process including failures, iterations, and corrections — which is the engineering record.
+> 🚀 **Status:** First flight scheduled — April 28, 2026. Integration complete. Ground testing passed. This repository documents the complete design process including failures, iterations, and corrections — which is the engineering record.
 
 ---
 
@@ -189,8 +189,6 @@ The avionics bay has gone through three major design iterations. Each failure wa
 **Integration status:** PCB assembly fits inside 1.35L bottle. ✅ Pending: secure mounting method and mass measurement.
 
 ![AvionicsBay v4 Render](media/Prototype%20Gallery/AvionicsBay_v4_render.png)
-
-> ⚠️ Integration results pending print completion.
 
 ### PCB — Physical Assembly
  
