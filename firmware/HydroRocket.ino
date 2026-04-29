@@ -7,8 +7,8 @@
 
 // ================================================================
 //  HYDRO-1 FLIGHT COMPUTER  —  v2.0  FLIGHT-READY
-//  Filtros y umbrales calibrados para vuelo real, no para
-//  pruebas estáticas en interiores.
+//  Filters and thresholds calibrated for real flight, not for
+//  static indoor testing.
 // ================================================================
 
 // ------------- 1. Config -------------
@@ -19,40 +19,40 @@ const char* password = "1234";
 #define PIN_SERVO  13
 #define MPU_ADDR   0x68
 
-// ------------- Umbrales de vuelo (ajusta según tu cohete) -------
-// Cohete de agua PET típico: ~15-20 m/s pico, ~30-60 m apogeo
-#define LIFTOFF_G            2.5f   // G para confirmar despegue
-#define LIFTOFF_CONFIRMS     4      // Muestras consecutivas requeridas
-#define APOGEE_VEL_THRESHOLD 0.0f   // Velocidad <= 0 = apogeo
-#define APOGEE_CONFIRMS      5      // Muestras consecutivas para confirmar apogeo
-#define APOGEE_ALT_DROP      1.0f   // Metros de caída como respaldo
-#define APOGEE_ALT_CONFIRMS  4      // Confirmaciones para caída de altitud
-#define MIN_ALTITUDE_LAUNCH  3.0f   // Altitud mínima antes de buscar apogeo
-#define LANDING_ALT_M        0.75f  // Altitud de aterrizaje
-#define ASCENT_TIMEOUT_MS    12000  // Timeout de seguridad en ASCENT (ms)
+// ------------- Flight Thresholds (adjust according to your rocket) -------
+// Typical PET water rocket: ~15-20 m/s peak, ~30-60 m apogee
+#define LIFTOFF_G            2.5f   // Gs to confirm liftoff
+#define LIFTOFF_CONFIRMS     4      // Required consecutive samples
+#define APOGEE_VEL_THRESHOLD 0.0f   // Velocity <= 0 = apogee
+#define APOGEE_CONFIRMS      5      // Consecutive samples to confirm apogee
+#define APOGEE_ALT_DROP      1.0f   // Meters of drop as backup
+#define APOGEE_ALT_CONFIRMS  4      // Confirmations for altitude drop
+#define MIN_ALTITUDE_LAUNCH  3.0f   // Minimum altitude before searching for apogee
+#define LANDING_ALT_M        0.75f  // Landing altitude
+#define ASCENT_TIMEOUT_MS    12000  // Safety timeout in ASCENT (ms)
 
 // ------------- 2. Objects -------------
-MPU9250_WE          mpu = MPU9250_WE(MPU_ADDR);
+MPU9250_WE    mpu = MPU9250_WE(MPU_ADDR);
 Adafruit_BMP280     bmp;
 Servo               parachute;
 WebSocketsServer    webSocket = WebSocketsServer(81);
 
 // ------------- 3. Globals & States -------------
-float         basePressure      = 1013.25f;
-int           currentState      = 0;
-float         currentAltitude   = 0.0f;
-float         filteredAltitude  = 0.0f;
-float         gForce            = 0.0f;
-float         maxAltitude       = 0.0f;
+float          basePressure      = 1013.25f;
+int            currentState      = 0;
+float          currentAltitude   = 0.0f;
+float          filteredAltitude  = 0.0f;
+float          gForce            = 0.0f;
+float          maxAltitude       = 0.0f;
 unsigned long lastTelemetryTime = 0;
-const int     telemetryInterval = 100;  // 10 Hz telemetría
-float         lastAltitude      = 0.0f;
-unsigned long lastTime          = 0;
-float         velocity          = 0.0f;
-float         pitch             = 0.0f;
-float         roll              = 0.0f;
+const int      telemetryInterval = 100;  // 10 Hz telemetry
+float          lastAltitude      = 0.0f;
+unsigned long lastTime           = 0;
+float          velocity          = 0.0f;
+float          pitch             = 0.0f;
+float          roll              = 0.0f;
 
-// Contadores de confirmación (anti-transient)
+// Confirmation counters (anti-transient)
 int           liftoffCounter    = 0;
 int           apogeeVelCounter  = 0;
 int           apogeeAltCounter  = 0;
@@ -60,10 +60,10 @@ int           apogeeAltCounter  = 0;
 // Timing
 unsigned long ascentStartTime   = 0;
 unsigned long lastBmpRead       = 0;
-const int     bmpInterval       = 40;   // 25 Hz BMP280
+const int      bmpInterval       = 40;   // 25 Hz BMP280
 
 // ================================================================
-//  Estado de vuelo — sincronizado con Ground Station
+//  Flight State — synchronized with Ground Station
 // ================================================================
 enum FlightStates {
   STANDBY   = 0,
@@ -96,22 +96,22 @@ void setup() {
   mpu.setGyrRange(MPU9250_GYRO_RANGE_2000);
   delay(100);
 
-  // BMP280 — configurar filtro IIR hardware (clave para vuelo real)
-  // El BMP280 tiene un filtro IIR integrado que elimina turbulencia
-  // y transientes de presión causados por el flujo aerodinámico.
+  // BMP280 — configure hardware IIR filter (key for real flight)
+  // The BMP280 has a built-in IIR filter that eliminates turbulence
+  // and pressure transients caused by aerodynamic flow.
   if (!bmp.begin(0x76)) {
     Serial.println("[ERROR] BMP280 Init Failed");
   }
   bmp.setSampling(
     Adafruit_BMP280::MODE_NORMAL,
-    Adafruit_BMP280::SAMPLING_X2,   // Temperatura
-    Adafruit_BMP280::SAMPLING_X16,  // Presión — alta resolución
-    Adafruit_BMP280::FILTER_X16,    // IIR x16 — suavizado hardware máximo
-    Adafruit_BMP280::STANDBY_MS_1   // Actualización cada ~27ms
+    Adafruit_BMP280::SAMPLING_X2,   // Temperature
+    Adafruit_BMP280::SAMPLING_X16,  // Pressure — high resolution
+    Adafruit_BMP280::FILTER_X16,    // IIR x16 — maximum hardware smoothing
+    Adafruit_BMP280::STANDBY_MS_1   // Update every ~27ms
   );
 
-  // Calibración de presión base — 300 muestras, ~3 segundos
-  // Hacerlo con el cohete quieto en el pad antes de armar
+  // Base pressure calibration — 300 samples, ~3 seconds
+  // Perform with the rocket stationary on the pad before arming
   Serial.println("Calibrating base pressure...");
   float sumPressure = 0;
   for (int i = 0; i < 300; i++) {
@@ -125,9 +125,9 @@ void setup() {
 
   // Servo
   parachute.attach(PIN_SERVO);
-  parachute.write(0);  // Cerrado
+  parachute.write(0);  // Closed
 
-  // Inicializar estado para evitar spikes
+  // Initialize state to avoid spikes
   lastTime         = millis();
   lastBmpRead      = millis();
   filteredAltitude = bmp.readAltitude(basePressure);
@@ -146,27 +146,27 @@ void loop() {
   updateLogic();
 
   int activeInterval = (currentState == STANDBY) ? 1000 : 100;
-  if (millis() - lastTelemetryTime >= activeInterval) {
+  if (millis() - lastTelemetryTime >= telemetryInterval) {
     sendData();
     lastTelemetryTime = millis();
   }
 }
 
 // ================================================================
-//  LÓGICA DE VUELO
-//  Basada en: detección multi-sample para evitar falsos positivos
-//  por turbulencia aerodinámica (standard en aviónica de cohetes)
+//  FLIGHT LOGIC
+//  Based on: multi-sample detection to avoid false positives
+//  from aerodynamic turbulence (standard in rocket avionics)
 // ================================================================
 void updateLogic() {
   switch (currentState) {
 
-    // -- STANDBY: esperar despegue confirmado por N muestras
+    // -- STANDBY: wait for liftoff confirmed by N samples
     case STANDBY:
       setCpuFrequencyMhz(80);
       if (gForce >= LIFTOFF_G) {
         liftoffCounter++;
         if (liftoffCounter >= LIFTOFF_CONFIRMS) {
-          setCpuFrequencyMhz(240);  // Restaurar CPU a máximo para vuelo
+          setCpuFrequencyMhz(240); // Restaurar CPU a máximo para vuelo
           currentState    = ASCENT;
           ascentStartTime = millis();
           maxAltitude     = currentAltitude;
@@ -174,22 +174,22 @@ void updateLogic() {
           Serial.println("[EVENT] LIFTOFF CONFIRMED");
         }
       } else {
-        liftoffCounter = 0;  // Reset si se interrumpe
+        liftoffCounter = 0;  // Reset if interrupted
       }
       break;
 
-    // -- ASCENT: detectar apogeo por velocidad Y altitud
+    // -- ASCENT: detect apogee via velocity AND altitude
     case ASCENT:
       if (currentAltitude > maxAltitude) {
         maxAltitude = currentAltitude;
       }
 
-      // Solo buscar apogeo una vez superada la altitud mínima
-      // Evita falsa detección en la rampa de lanzamiento
+      // Only search for apogee once minimum altitude is exceeded
+      // Avoids false detection on the launch rail
       if (maxAltitude < MIN_ALTITUDE_LAUNCH) break;
 
-      // Método 1 (primario): velocidad cruza cero → apogeo
-      // El zero crossing es el método más confiable según literatura
+      // Method 1 (primary): velocity crosses zero → apogee
+      // Zero crossing is the most reliable method according to literature
       if (velocity <= APOGEE_VEL_THRESHOLD) {
         apogeeVelCounter++;
         if (apogeeVelCounter >= APOGEE_CONFIRMS) {
@@ -201,7 +201,7 @@ void updateLogic() {
         apogeeVelCounter = 0;
       }
 
-      // Método 2 (respaldo): caída de altitud desde el máximo
+      // Method 2 (backup): altitude drop from the maximum
       if (currentAltitude < (maxAltitude - APOGEE_ALT_DROP)) {
         apogeeAltCounter++;
         if (apogeeAltCounter >= APOGEE_ALT_CONFIRMS) {
@@ -213,7 +213,7 @@ void updateLogic() {
         apogeeAltCounter = 0;
       }
 
-      // Método 3 (seguridad): timeout absoluto
+      // Method 3 (safety): absolute timeout
       if (millis() - ascentStartTime > ASCENT_TIMEOUT_MS) {
         Serial.println("[SAFETY] TIMEOUT — forcing parachute deployment");
         openParachute();
@@ -269,6 +269,7 @@ void readSensors() {
     // Velocidad — diferencial de altitud filtrada
     if (dt > 0.001f && abs(gForce - 1.0f) > 0.05f) {
       float rawVel = (currentAltitude - lastAltitude) / dt;
+      // Alpha=0.85 in flight: smoothes turbulence without hiding real dynamics
       velocity = velocity * 0.85f + rawVel * 0.15f;
     }
 
@@ -286,7 +287,7 @@ void readSensors() {
 }
 
 // ================================================================
-//  TELEMETRÍA — JSON a Ground Station vía WebSocket
+//  TELEMETRY — JSON to Ground Station via WebSocket
 // ================================================================
 void sendData() {
   String json = "{";
