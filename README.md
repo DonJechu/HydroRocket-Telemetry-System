@@ -1,4 +1,4 @@
-# 🚀 Alt-I Flight Computer — v2.0
+# 🚀 Atl-I Flight Computer — v2.0
 
 > **Avionics system for experimental water-powered rockets.**
 > Real-time telemetry · Triple-redundant apogee detection · Wi-Fi ground station · 7-state flight FSM
